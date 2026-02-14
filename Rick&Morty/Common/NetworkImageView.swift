@@ -19,7 +19,7 @@ struct NetworkImageView<Placeholder: View>: View {
     init(
         url: String,
         contentMode: ContentMode = .fill,
-        fallbackSystemName: String = "person.fill",
+        fallbackSystemName: String = AppImages.personFill,
         @ViewBuilder placeholder: () -> Placeholder = { Color.gray.opacity(0.1) },
         animation: Animation? = .easeInOut(duration: 0.3)
     ) {
@@ -33,7 +33,7 @@ struct NetworkImageView<Placeholder: View>: View {
     init(
         url: URL?,
         contentMode: ContentMode = .fill,
-        fallbackSystemName: String = "person.fill",
+        fallbackSystemName: String = AppImages.personFill,
         @ViewBuilder placeholder: () -> Placeholder = { Color.gray.opacity(0.1) },
         animation: Animation? = .easeInOut(duration: 0.3)
     ) {

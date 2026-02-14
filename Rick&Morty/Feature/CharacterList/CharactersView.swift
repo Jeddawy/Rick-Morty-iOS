@@ -19,7 +19,7 @@ struct CharactersView: View {
         NavigationStack {
             contentSection
             .listStyle(.plain)
-            .searchable(text:$viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search characters...")
+            .searchable(text:$viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: AppStrings.searchPrompt)
             .navigationDestination(for: CharacterModel.self) { character in
                 CharacterDetailView(character: character)
             }
@@ -37,24 +37,24 @@ struct CharactersView: View {
         case .loading:
             VStack {
                 Spacer()
-                ProgressView("Loading...")
+                ProgressView(AppStrings.loading)
                 Spacer()
             }
             
         case .noNetwork:
             VStack(spacing: 16) {
                 Spacer()
-                Image(systemName: "wifi.slash")
+                Image(systemName: AppImages.wifiSlash)
                     .font(.system(size: 60))
                     .foregroundColor(.gray)
-                Text("No Internet Connection")
+                Text(AppStrings.noInternetMatches)
                     .font(.title2)
                     .fontWeight(.semibold)
-                Text("Please check your connection and try again.")
+                Text(AppStrings.checkConnection)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
-                Button("Retry") {
+                Button(AppStrings.retry) {
                     viewModel.loadCharacters()
                 }
                 .buttonStyle(.bordered)
@@ -64,10 +64,10 @@ struct CharactersView: View {
         case .noSearchResults:
             VStack {
                 Spacer()
-                Image(systemName: "magnifyingglass")
+                Image(systemName: AppImages.magnifyingGlass)
                     .font(.largeTitle)
                     .foregroundColor(.gray)
-                Text("No characters found")
+                Text(AppStrings.noCharactersFound)
                     .foregroundColor(.secondary)
                     .padding()
                 Spacer()
@@ -76,13 +76,13 @@ struct CharactersView: View {
         case .failedToLoad(let message):
             VStack(spacing: 16) {
                 Spacer()
-                Image(systemName: "exclamationmark.triangle")
+                Image(systemName: AppImages.warning)
                     .font(.largeTitle)
                     .foregroundColor(.orange)
                 Text(message)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
-                Button("Retry") {
+                Button(AppStrings.retry) {
                     viewModel.loadCharacters()
                 }
                 .buttonStyle(.borderedProminent)

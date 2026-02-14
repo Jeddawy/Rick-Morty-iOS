@@ -21,15 +21,15 @@ extension NetworkError {
     var message: String {
         switch self {
         case .invalidURL:
-            return "Invalid request URL."
+            return AppStrings.Network.invalidURL
         case .invalidResponse:
-            return "Invalid server response."
+            return AppStrings.Network.invalidResponse
         case .httpError(_, let message):
-            return message ?? "Server returned an error."
+            return message ?? AppStrings.Network.serverErrorDefault
         case .decodingError:
-            return "Failed to decode response."
+            return AppStrings.Network.decodingError
         case .encodingError:
-            return "Failed to encode request."
+            return AppStrings.Network.encodingError
         case .unknown(let error):
             return error.localizedDescription
         }
