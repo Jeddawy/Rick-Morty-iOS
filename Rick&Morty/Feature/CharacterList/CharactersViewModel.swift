@@ -80,18 +80,19 @@ private extension CharactersViewModel {
             self.hasNextPage = hasNext
             self.currentPage += 1
 
-            if self.currentCharacters.isEmpty {
-                self.stateConfiguration = .noSearchResults
-            } else {
-                self.stateConfiguration = .loaded(self.currentCharacters)
-            }
+            self.stateConfiguration = .loaded(self.currentCharacters)
             
         } catch let error as NetworkError {
             if Task.isCancelled { return }
             self.stateConfiguration = .failedToLoad(error.message)
         } catch {
             if Task.isCancelled { return }
-            self.stateConfiguration = .failedToLoad(error.localizedDescription)
+            
+            if (error as NSError).code == NSURLErrorNotConnectedToInternet {
+                self.stateConfiguration = .noNetwork
+            } else {
+                self.stateConfiguration = .failedToLoad(error.localizedDescription)
+            }
         }
     }
     

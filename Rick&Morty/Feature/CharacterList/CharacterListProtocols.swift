@@ -18,7 +18,6 @@ protocol ListDisplayable: ObservableObject {
 enum CharacterListState: Equatable {
     case idle
     case noNetwork
-    case noSearchResults
     case loading
     case loaded([CharacterEntity])
     case failedToLoad(_ msg: String)

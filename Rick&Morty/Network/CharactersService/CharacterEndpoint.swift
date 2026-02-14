@@ -10,7 +10,6 @@ import Foundation
 enum CharacterEndpoint: APIEndpoint {
     
     case characters(CharacterFilterParameters)
-    case character(id: Int)
     
     //TODO : make  add it to configfile
     var baseURL: String {
@@ -21,14 +20,12 @@ enum CharacterEndpoint: APIEndpoint {
         switch self {
         case .characters:
             return "api/character"
-        case .character(let id):
-            return "api/character/\(id)"
         }
     }
     
     var method: HTTPMethod {
         switch self {
-        case .character, .characters:
+        case .characters:
             return .get
         }
     }

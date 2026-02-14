@@ -36,7 +36,7 @@ extension NetworkError {
             return AppStrings.Network.decodingError
         case .encodingError:
             return AppStrings.Network.encodingError
-        case .unknown(let error):
+        case .unknown:
             return AppStrings.Network.unknownError
         }
     }

@@ -61,18 +61,6 @@ struct CharactersView: View {
                 Spacer()
             }
             
-        case .noSearchResults:
-            VStack {
-                Spacer()
-                Image(systemName: AppImages.magnifyingGlass)
-                    .font(.largeTitle)
-                    .foregroundColor(.gray)
-                Text(AppStrings.noCharactersFound)
-                    .foregroundColor(.secondary)
-                    .padding()
-                Spacer()
-            }
-            
         case .failedToLoad(let message):
             VStack(spacing: 16) {
                 Spacer()
