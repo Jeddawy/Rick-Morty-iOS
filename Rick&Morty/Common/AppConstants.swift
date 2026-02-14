@@ -18,9 +18,9 @@ enum AppStrings {
     enum Network {
         static let invalidURL = "Invalid request URL."
         static let invalidResponse = "Invalid server response."
-        static let serverErrorDefault = "Server returned an error."
         static let decodingError = "Failed to decode response."
         static let encodingError = "Failed to encode request."
+        static let unknownError = "Something went wrong, Please try again later."
     }
 }
 

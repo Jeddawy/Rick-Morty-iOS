@@ -88,7 +88,7 @@ private extension CharactersViewModel {
             
         } catch let error as NetworkError {
             if Task.isCancelled { return }
-            self.stateConfiguration = .failedToLoad(error.localizedDescription)
+            self.stateConfiguration = .failedToLoad(error.message)
         } catch {
             if Task.isCancelled { return }
             self.stateConfiguration = .failedToLoad(error.localizedDescription)

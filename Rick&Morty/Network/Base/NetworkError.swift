@@ -24,14 +24,20 @@ extension NetworkError {
             return AppStrings.Network.invalidURL
         case .invalidResponse:
             return AppStrings.Network.invalidResponse
-        case .httpError(_, let message):
-            return message ?? AppStrings.Network.serverErrorDefault
+        case .httpError(let statusCode, let message):
+            if let message = message, !message.isEmpty {
+                return message
+            }
+            if statusCode == 404 {
+                return AppStrings.noCharactersFound
+            }
+            return AppStrings.Network.unknownError
         case .decodingError:
             return AppStrings.Network.decodingError
         case .encodingError:
             return AppStrings.Network.encodingError
         case .unknown(let error):
-            return error.localizedDescription
+            return AppStrings.Network.unknownError
         }
     }
 }
