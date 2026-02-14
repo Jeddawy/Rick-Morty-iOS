@@ -20,7 +20,7 @@ struct CharactersView: View {
             contentSection
             .listStyle(.plain)
             .searchable(text:$viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: AppStrings.searchPrompt)
-            .navigationDestination(for: CharacterModel.self) { character in
+            .navigationDestination(for: CharacterEntity.self) { character in
                 CharacterDetailView(character: character)
             }
         }

@@ -20,10 +20,10 @@ enum CharacterListState: Equatable {
     case noNetwork
     case noSearchResults
     case loading
-    case loaded([CharacterModel])
+    case loaded([CharacterEntity])
     case failedToLoad(_ msg: String)
 }
 
 protocol ListInteractable: ObservableObject {
-    func loadMoreIfNeeded(currentItem: CharacterModel)
+    func loadMoreIfNeeded(currentItem: CharacterEntity)
 }

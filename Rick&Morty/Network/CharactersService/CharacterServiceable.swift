@@ -9,7 +9,7 @@
 import Foundation
 
 protocol CharacterServiceable {
-    func getCharacters(parameters: CharacterFilterParameters) async throws -> Result<RickAndMortyResponse<[CharacterModel]>, Error>
+    func getCharacters(parameters: CharacterFilterParameters) async throws -> Result<RickAndMortyResponse<[CharacterResponse]>, Error>
 }
 
 struct CharacterService: CharacterServiceable {
@@ -19,11 +19,11 @@ struct CharacterService: CharacterServiceable {
         self.client = client
     }
     
-    func getCharacters(parameters: CharacterFilterParameters) async throws -> Result<RickAndMortyResponse<[CharacterModel]>, Error> {
+    func getCharacters(parameters: CharacterFilterParameters) async throws -> Result<RickAndMortyResponse<[CharacterResponse]>, Error> {
         let endpoint = CharacterEndpoint.characters(parameters)
         
         do {
-            let response: RickAndMortyResponse<[CharacterModel]> = try await client.request(endpoint)
+            let response: RickAndMortyResponse<[CharacterResponse]> = try await client.request(endpoint)
             return .success(response)
         } catch {
             return .failure(error)

@@ -1,34 +1,28 @@
 //
-//  CharacterModel.swift
+//  CharacterEntity.swift
 //  Rick&Morty
 //
 //  Created by Ibrahim El-geddawy on 14/02/2026.
 //
 
-
 import Foundation
 
-struct CharacterModel: Identifiable, Codable, Hashable {
+struct CharacterEntity: Identifiable, Hashable {
     let id: Int
     let name: String
     let status: CharacterStatus
     let species: String
     let gender: String
     let imageUrl: String
-    let location: LocationModel
-    
-    enum CodingKeys: String, CodingKey {
-        case id, name, status, species, gender, location
-        case imageUrl = "image"
-    }
+    let location: LocationEntity
 }
 
-struct LocationModel: Codable, Hashable {
+struct LocationEntity: Hashable {
     var name: String
     var url: String
 }
 
-enum CharacterStatus: String, Codable, Hashable {
+enum CharacterStatus: String, Hashable {
     case alive = "Alive"
     case dead = "Dead"
     case unknown = "unknown"

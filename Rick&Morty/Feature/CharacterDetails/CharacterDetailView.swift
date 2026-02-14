@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CharacterDetailView: View {
-    let character: CharacterModel
+    let character: CharacterEntity
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {

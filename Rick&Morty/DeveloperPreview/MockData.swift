@@ -8,34 +8,34 @@
 import Foundation
 
 struct MockData {
-    static let rick = CharacterModel(
+    static let rick = CharacterEntity(
         id: 1,
         name: "Rick Sanchez",
         status: .alive,
         species: "Human",
         gender: "Male",
         imageUrl: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-        location: LocationModel(name: "Citadel of Ricks", url: "")
+        location: LocationEntity(name: "Citadel of Ricks", url: "")
     )
     
-    static let morty = CharacterModel(
+    static let morty = CharacterEntity(
         id: 2,
         name: "Morty Smith",
         status: .alive,
         species: "Human",
         gender: "Male",
         imageUrl: "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-        location: LocationModel(name: "Earth (C-137)", url: "")
+        location: LocationEntity(name: "Earth (C-137)", url: "")
     )
     
-    static let summer = CharacterModel(
+    static let summer = CharacterEntity(
         id: 3,
         name: "Summer Smith",
         status: .alive,
         species: "Human",
         gender: "Female",
         imageUrl: "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
-        location: LocationModel(name: "Earth (C-137)", url: "")
+        location: LocationEntity(name: "Earth (C-137)", url: "")
     )
     
     static let characters = [rick, morty, summer]

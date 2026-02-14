@@ -19,7 +19,7 @@ class CharactersViewModel: CharacterListViewModel {
     // MARK: - Private Properties
     private var cancellables = Set<AnyCancellable>()
     private var currentPage = 1
-    private var currentCharacters: [CharacterModel] = []
+    private var currentCharacters: [CharacterEntity] = []
     private var searchTask: Task<Void, Never>?
 
     private let repository: CharacterRepository
@@ -31,7 +31,7 @@ class CharactersViewModel: CharacterListViewModel {
     
     // MARK: - ListInteractable Methods
 
-    func loadMoreIfNeeded(currentItem: CharacterModel) {
+    func loadMoreIfNeeded(currentItem: CharacterEntity) {
         guard case .loaded(let characters) = stateConfiguration else { return }
         guard hasNextPage && !isLoading && currentItem.id == characters.last?.id else { return }
         
