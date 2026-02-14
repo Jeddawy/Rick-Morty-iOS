@@ -46,17 +46,6 @@ class CharactersViewModel: CharacterListViewModel {
         return false
     }
     
-    private func search(query: String) {
-        searchTask?.cancel()
-
-        currentPage = 1
-        hasNextPage = true
-        
-        searchTask = Task {
-            await fetchCharacters(page: currentPage, name: query.isEmpty ? nil : query)
-        }
-    }
-    
     func loadCharacters() {
         currentPage = 1
         hasNextPage = true
@@ -65,9 +54,12 @@ class CharactersViewModel: CharacterListViewModel {
         }
     }
 }
+
+//MARK: private helpers
+
 private extension CharactersViewModel {
     
-    private func fetchCharacters(page: Int, name: String?) async {
+    func fetchCharacters(page: Int, name: String?) async {
         
         if page == 1 {
             stateConfiguration = .loading
@@ -100,6 +92,17 @@ private extension CharactersViewModel {
         } catch {
             if Task.isCancelled { return }
             self.stateConfiguration = .failedToLoad(error.localizedDescription)
+        }
+    }
+    
+    private func search(query: String) {
+        searchTask?.cancel()
+
+        currentPage = 1
+        hasNextPage = true
+        
+        searchTask = Task {
+            await fetchCharacters(page: currentPage, name: query.isEmpty ? nil : query)
         }
     }
     
