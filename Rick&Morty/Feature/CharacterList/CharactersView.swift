@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct CharactersView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+    private var mock: MockData = MockData()
+    @State private var searchText: String = ""
+
+    var filteredCharacters: [CharacterModel] {
+        if searchText.isEmpty {
+            return MockData.characters
+        } else {
+            return MockData.characters.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
-        .padding()
+    }
+
+    var body: some View {
+        NavigationStack {
+            List {
+                ForEach(filteredCharacters) { character in
+                    CharacterRowView(character: character)
+                }
+            }
+            .listStyle(.plain)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search characters...")
+        }
         .task {
             do {
                 let service = CharacterService()
