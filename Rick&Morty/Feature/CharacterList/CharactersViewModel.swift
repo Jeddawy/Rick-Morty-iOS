@@ -35,8 +35,7 @@ class CharactersViewModel: CharacterListViewModel {
         guard case .loaded(let characters) = stateConfiguration else { return }
         guard hasNextPage && !isLoading && currentItem.id == characters.last?.id else { return }
         
-        currentPage += 1
-        Task { await fetchCharacters(page: currentPage, name: searchText.isEmpty ? nil : searchText) }
+        Task { await fetchCharacters(page: currentPage + 1, name: searchText.isEmpty ? nil : searchText) }
     }
     
     // MARK: - Private Helpers
@@ -79,7 +78,8 @@ private extension CharactersViewModel {
             }
             
             self.hasNextPage = hasNext
-            
+            self.currentPage += 1
+
             if self.currentCharacters.isEmpty {
                 self.stateConfiguration = .noSearchResults
             } else {
