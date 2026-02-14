@@ -11,7 +11,7 @@ import Foundation
 class CharacterRepositoryDefault: CharacterRepository {
     private let service: CharacterServiceable
     
-    init(service: CharacterServiceable = CharacterService()) {
+    init(service: CharacterServiceable) {
         self.service = service
     }
     

@@ -15,7 +15,7 @@ protocol CharacterServiceable {
 struct CharacterService: CharacterServiceable {
     private let client: APIClient
     
-    init(client: APIClient = URLSessionAPIClient()) {
+    init(client: APIClient) {
         self.client = client
     }
     

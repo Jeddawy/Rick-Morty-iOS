@@ -11,7 +11,7 @@ struct CharactersView: View {
     
     @StateObject private var viewModel: CharactersViewModel
     
-    init(viewModel: CharactersViewModel = CharactersViewModel()) {
+    init(viewModel: CharactersViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
@@ -115,5 +115,5 @@ struct CharactersView: View {
 }
 
 #Preview {
-    CharactersView()
+    CharactersView(viewModel: DIContainer().makeCharactersViewModel())
 }

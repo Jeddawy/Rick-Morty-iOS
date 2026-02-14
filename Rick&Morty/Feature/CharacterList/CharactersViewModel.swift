@@ -24,7 +24,7 @@ class CharactersViewModel: CharacterListViewModel {
 
     private let repository: CharacterRepository
 
-    init(repository: CharacterRepository = CharacterRepositoryDefault(service: CharacterService())) {
+    init(repository: CharacterRepository) {
         self.repository = repository
         setupBinding()
     }
