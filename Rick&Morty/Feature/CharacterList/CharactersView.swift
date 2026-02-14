@@ -23,11 +23,16 @@ struct CharactersView: View {
         NavigationStack {
             List {
                 ForEach(filteredCharacters) { character in
-                    CharacterRowView(character: character)
+                    NavigationLink(destination: CharacterDetailView(character: character)) {
+                        CharacterRowView(character: character)
+                    }
                 }
             }
             .listStyle(.plain)
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search characters...")
+            .navigationDestination(for: CharacterModel.self) { character in
+                CharacterDetailView(character: character)
+            }
         }
         .task {
             do {

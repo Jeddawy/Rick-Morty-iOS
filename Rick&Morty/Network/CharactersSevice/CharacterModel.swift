@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct CharacterModel: Identifiable, Codable {
+struct CharacterModel: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let status: CharacterStatus
@@ -23,12 +23,12 @@ struct CharacterModel: Identifiable, Codable {
     }
 }
 
-struct LocationModel: Codable {
+struct LocationModel: Codable, Hashable {
     var name: String
     var url: String
 }
 
-enum CharacterStatus: String, Codable {
+enum CharacterStatus: String, Codable, Hashable {
     case alive = "Alive"
     case dead = "Dead"
     case unknown = "unknown"
