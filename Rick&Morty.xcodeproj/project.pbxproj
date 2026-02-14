@@ -29,9 +29,36 @@
 		21A37C3F2F407D310037F468 /* Rick&MortyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Rick&MortyUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		21B2C6C02F4110EC00C06BA6 /* Exceptions for "Rick&Morty" folder in "Rick&MortyTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Common/AppConstants.swift,
+				Domain/CharacterRepository.swift,
+				Domain/Entities/CharacterEntity.swift,
+				"Extensions/Encodable+Dictionary.swift",
+				Feature/CharacterList/CharacterListProtocols.swift,
+				Feature/CharacterList/CharactersViewModel.swift,
+				Network/Base/APIClient.swift,
+				Network/Base/NetworkError.swift,
+				Network/Base/URLSessionAPIClient.swift,
+				Network/CharactersService/CharacterEndpoint.swift,
+				Network/CharactersService/CharacterFilterParameters.swift,
+				Network/CharactersService/CharacterServiceable.swift,
+				Network/CharactersService/RickAndMortyResponse.swift,
+				Network/DTOs/CharacterResponse.swift,
+				Repository/CharacterRepositoryDefault.swift,
+			);
+			target = 21A37C342F407D310037F468 /* Rick&MortyTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		21A37C2A2F407D300037F468 /* Rick&Morty */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				21B2C6C02F4110EC00C06BA6 /* Exceptions for "Rick&Morty" folder in "Rick&MortyTests" target */,
+			);
 			path = "Rick&Morty";
 			sourceTree = "<group>";
 		};
