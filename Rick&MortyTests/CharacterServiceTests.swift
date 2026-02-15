@@ -35,8 +35,8 @@ struct CharacterServiceTests {
         
         switch result {
         case .success(let response):
-            #expect(response.results.count == 1)
-            #expect(response.results.first?.name == "Rick")
+            #expect(response.results?.count == 1)
+            #expect(response.results?.first?.name == "Rick")
         case .failure:
             Issue.record("Expected success but got failure")
         }
