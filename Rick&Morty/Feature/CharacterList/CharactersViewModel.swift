@@ -22,10 +22,10 @@ class CharactersViewModel: CharacterListViewModel {
     private var currentCharacters: [CharacterEntity] = []
     private var searchTask: Task<Void, Never>?
 
-    private let repository: CharacterRepository
+    private let fetchCharactersUseCase: FetchCharactersUseCase
 
-    init(repository: CharacterRepository) {
-        self.repository = repository
+    init(fetchCharactersUseCase: FetchCharactersUseCase) {
+        self.fetchCharactersUseCase = fetchCharactersUseCase
         setupBinding()
     }
     
@@ -67,7 +67,7 @@ private extension CharactersViewModel {
         do {
             if Task.isCancelled { return }
             
-            let (newCharacters, hasNext) = try await repository.fetchCharacters(page: page, name: name)
+            let (newCharacters, hasNext) = try await fetchCharactersUseCase.execute(page: page, name: name)
             
             if Task.isCancelled { return }
             

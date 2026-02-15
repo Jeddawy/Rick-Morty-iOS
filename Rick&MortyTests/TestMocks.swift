@@ -61,3 +61,20 @@ class MockCharacterRepository: CharacterRepository {
         }
     }
 }
+
+// MARK: - MockFetchCharactersUseCase
+class MockFetchCharactersUseCase: FetchCharactersUseCase {
+    var executeResult: Result<(characters: [CharacterEntity], hasNextPage: Bool), Error>?
+
+    func execute(page: Int, name: String?) async throws -> (characters: [CharacterEntity], hasNextPage: Bool) {
+        guard let result = executeResult else {
+            fatalError("Result not set in MockFetchCharactersUseCase")
+        }
+        switch result {
+        case .success(let response):
+            return response
+        case .failure(let error):
+            throw error
+        }
+    }
+}

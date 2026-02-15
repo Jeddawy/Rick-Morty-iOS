@@ -12,8 +12,8 @@ import Combine
 struct CharactersViewModelTests {
     
     @Test func testInitialState() {
-        let mockRepository = MockCharacterRepository()
-        let viewModel = CharactersViewModel(repository: mockRepository)
+        let mockUseCase = MockFetchCharactersUseCase()
+        let viewModel = CharactersViewModel(fetchCharactersUseCase: mockUseCase)
         
         if case .idle = viewModel.stateConfiguration {
             #expect(true)
@@ -25,8 +25,8 @@ struct CharactersViewModelTests {
     }
     
     @Test func testLoadCharactersSuccess() async throws {
-        let mockRepository = MockCharacterRepository()
-        let viewModel = CharactersViewModel(repository: mockRepository)
+        let mockUseCase = MockFetchCharactersUseCase()
+        let viewModel = CharactersViewModel(fetchCharactersUseCase: mockUseCase)
         
         let mockCharacter = CharacterEntity(
             id: 1,
@@ -38,7 +38,7 @@ struct CharactersViewModelTests {
             location: .init(name: "Earth", url: "url")
         )
         
-        mockRepository.fetchCharactersResult = .success((characters: [mockCharacter], hasNextPage: true))
+        mockUseCase.executeResult = .success((characters: [mockCharacter], hasNextPage: true))
         
         viewModel.loadCharacters()
         
@@ -55,10 +55,10 @@ struct CharactersViewModelTests {
     }
     
     @Test func testLoadCharactersFailure() async throws {
-        let mockRepository = MockCharacterRepository()
-        let viewModel = CharactersViewModel(repository: mockRepository)
+        let mockUseCase = MockFetchCharactersUseCase()
+        let viewModel = CharactersViewModel(fetchCharactersUseCase: mockUseCase)
         
-        mockRepository.fetchCharactersResult = .failure(NetworkError.invalidResponse)
+        mockUseCase.executeResult = .failure(NetworkError.invalidResponse)
         
         viewModel.loadCharacters()
         
@@ -77,19 +77,19 @@ struct CharactersViewModelTests {
     }
     
     @Test func testLoadMoreIfNeeded() async throws {
-        let mockRepository = MockCharacterRepository()
-        let viewModel = CharactersViewModel(repository: mockRepository)
+        let mockUseCase = MockFetchCharactersUseCase()
+        let viewModel = CharactersViewModel(fetchCharactersUseCase: mockUseCase)
         
         let character1 = CharacterEntity(id: 1, name: "C1", status: .alive, species: "S", gender: "G", imageUrl: "U", location: .init(name: "L", url: "U"))
         let character2 = CharacterEntity(id: 2, name: "C2", status: .alive, species: "S", gender: "G", imageUrl: "U", location: .init(name: "L", url: "U"))
 
         // Initial load
-        mockRepository.fetchCharactersResult = .success((characters: [character1], hasNextPage: true))
+        mockUseCase.executeResult = .success((characters: [character1], hasNextPage: true))
         viewModel.loadCharacters()
         try await Task.sleep(nanoseconds: 500_000_000)
         
         // Prepare next page
-        mockRepository.fetchCharactersResult = .success((characters: [character2], hasNextPage: false))
+        mockUseCase.executeResult = .success((characters: [character2], hasNextPage: false))
         
         // Trigger load more
         viewModel.loadMoreIfNeeded(currentItem: character1)
@@ -105,12 +105,12 @@ struct CharactersViewModelTests {
     }
     
     @Test func testSearch() async throws {
-        let mockRepository = MockCharacterRepository()
-        let viewModel = CharactersViewModel(repository: mockRepository)
+        let mockUseCase = MockFetchCharactersUseCase()
+        let viewModel = CharactersViewModel(fetchCharactersUseCase: mockUseCase)
         
         let searchResult = CharacterEntity(id: 3, name: "Morty", status: .alive, species: "Human", gender: "Male", imageUrl: "U", location: .init(name: "E", url: "U"))
         
-        mockRepository.fetchCharactersResult = .success((characters: [searchResult], hasNextPage: false))
+        mockUseCase.executeResult = .success((characters: [searchResult], hasNextPage: false))
         
         // Simulate typing
         viewModel.searchText = "Morty"
@@ -127,11 +127,11 @@ struct CharactersViewModelTests {
     }
     
     @Test func testLoadCharactersGenericFailure() async throws {
-        let mockRepository = MockCharacterRepository()
-        let viewModel = CharactersViewModel(repository: mockRepository)
+        let mockUseCase = MockFetchCharactersUseCase()
+        let viewModel = CharactersViewModel(fetchCharactersUseCase: mockUseCase)
         
         struct GenericError: Error {}
-        mockRepository.fetchCharactersResult = .failure(GenericError())
+        mockUseCase.executeResult = .failure(GenericError())
         
         viewModel.loadCharacters()
         
@@ -146,11 +146,11 @@ struct CharactersViewModelTests {
     }
     
     @Test func testLoadCharactersNoNetwork() async throws {
-        let mockRepository = MockCharacterRepository()
-        let viewModel = CharactersViewModel(repository: mockRepository)
+        let mockUseCase = MockFetchCharactersUseCase()
+        let viewModel = CharactersViewModel(fetchCharactersUseCase: mockUseCase)
         
         let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil)
-        mockRepository.fetchCharactersResult = .failure(error)
+        mockUseCase.executeResult = .failure(error)
         
         viewModel.loadCharacters()
         

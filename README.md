@@ -6,7 +6,6 @@ A clean, modern iOS application built with SwiftUI to explore characters from th
 -   **Character List**: Scrollable list of characters with infinite scrolling (pagination).
 -   **Search**: Real-time search by character name with debouncing.
 -   **Detail View**: Comprehensive character details including location, species, and status.
--   **Offline Support**: Graceful error handling for network connectivity issues.
 -   **Modern UI**: Clean interface using SwiftUI and MVVM architecture.
 
 ## 🚀 Getting Started
@@ -31,33 +30,87 @@ Run the unit test suite to verify the logic:
 
 ## 🏗 Architecture
 
-The application follows a **Clean Architecture** pattern using **MVVM** (Model-View-ViewModel) and **Coordinator** principles.
+The application follows **Clean Architecture** with **MVVM** (Model-View-ViewModel). Data flows in one direction: **View → ViewModel → Use Case → Repository → Service**.
 
 ### Key Components
--   **Dependency Injection (DI)**: A centralized `DIContainer` manages the creation and injection of dependencies (`APIClient`, `Services`, `Repositories`) into ViewModels and Views. This ensures testability and loose coupling.
--   **Repository Pattern**: `CharacterRepository` abstract the data source. The ViewModel depends on the protocol, not the implementation.
--   **Network Layer**: A protocol-oriented network layer using `async/await`. It supports generic requests, custom encoding, and error handling.
--   **SwiftUI & Combine**: The UI is built with SwiftUI, observing `@Published` properties in ViewModels. `Combine` is used for handling search text debouncing.
+-   **Dependency Injection (DI)**: A centralized `DIContainer` wires `APIClient`, services, repositories, use cases, and view models. This keeps the app testable and loosely coupled.
+-   **Use Cases**: Application rules live in the domain layer. The ViewModel depends on **use case protocols** (e.g. `FetchCharactersUseCase`), not on the repository. Use cases orchestrate domain operations and keep presentation independent of data details.
+-   **Repository Pattern**: Repositories abstract the data source (API, cache, or DB). They are responsible for **mapping DTOs to domain entities** and exposing a single, domain-oriented API. The domain layer never sees DTOs or HTTP.
+-   **Network Layer**: Protocol-based networking with `async/await`: generic requests, custom encoding, and structured error handling.
+-   **SwiftUI & Combine**: UI is built with SwiftUI, binding to ViewModel `@Published` state. Combine is used for search debouncing and other reactive flows.
 
 ### Directory Structure
 -   `App`: Entry point (`Rick_MortyApp`) and Dependency Injection (`DIContainer`).
--   `Feature`: Feature-specific code (Views, ViewModels).
--   `Domain`: Protocols and Models.
--   `Repository`: Implementations of data fetching logic.
--   `Network`: Core networking infrastructure (`APIClient`, `Endpoints`).
+-   `Feature`: Feature-specific UI (Views, ViewModels, protocols like `ListDisplayable` / `ListInteractable`).
+-   `Domain`: Core business layer — entities (`CharacterEntity`), repository protocol (`CharacterRepository`), and **use cases** (`FetchCharactersUseCase`).
+-   `Repository`: Repository implementations that call services and map DTOs → entities.
+-   `Network`: Networking (`APIClient`, endpoints, DTOs, services).
 -   `Common`: Shared utilities, constants (`AppConstants`), and reusable views (`NetworkImageView`).
 
 ### System Design
-Below is the high-level system design highlighting the separation of concerns between Presentation, Domain, and Data layers.
+High-level flow: the View talks only to the ViewModel; the ViewModel talks only to Use Cases; Use Cases use Repositories; Repositories use Services and map DTOs to Entities.
 
-<img width="1503" height="1020" alt="Diagram" src="https://github.com/user-attachments/assets/c3d988a1-ed0b-4063-bc3c-c438b19015a7" />
+```mermaid
+classDiagram
+    direction LR
 
+    %% Styles
+    classDef presentation fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef domain fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef data fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
 
-### Demo
-Below and GIF Demo for the App
+    %% Presentation Layer
+    subgraph Presentation ["Presentation Layer"]
+        direction TB
+        class CharactersView
+        class CharactersViewModel
+    end
 
-<![Demo](https://github.com/user-attachments/assets/a3dc0a09-c4ef-489b-93c2-2553edcc2611) />
+    %% Domain Layer
+    subgraph Domain ["Domain Layer"]
+        direction TB
+        class FetchCharactersUseCase {
+            <<protocol>>
+        }
+        class CharacterRepository {
+            <<protocol>>
+        }
+        class CharacterEntity
+    end
 
+    %% Data Layer
+    subgraph Data ["Data Layer"]
+        direction TB
+        class FetchCharactersUseCaseDefault
+        class CharacterRepositoryDefault
+        class CharacterServiceable {
+            <<protocol>>
+        }
+        class CharacterService
+        class APIClient {
+            <<protocol>>
+        }
+    end
+
+    %% Relationships
+    CharactersView --> CharactersViewModel : Owns
+    CharactersViewModel --> FetchCharactersUseCase : Uses
+
+    FetchCharactersUseCase <|.. FetchCharactersUseCaseDefault : Implements
+    FetchCharactersUseCaseDefault --> CharacterRepository : Uses
+    CharacterRepository <|.. CharacterRepositoryDefault : Implements
+    CharacterRepositoryDefault --> CharacterServiceable : Uses
+    CharacterRepositoryDefault ..> CharacterEntity : DTO → Entity
+    CharacterServiceable <|.. CharacterService : Implements
+    CharacterService --> APIClient : Uses
+
+    %% Apply Styles
+    class CharactersView,CharactersViewModel presentation
+    class FetchCharactersUseCase,CharacterRepository,CharacterEntity domain
+    class FetchCharactersUseCaseDefault,CharacterRepositoryDefault,CharacterServiceable,CharacterService,APIClient data
+```
+
+---
 
 ## 🧐 Decisions & Assumptions
 

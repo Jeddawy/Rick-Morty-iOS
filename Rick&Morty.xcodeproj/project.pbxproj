@@ -34,8 +34,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Common/AppConstants.swift,
-				Domain/CharacterRepository.swift,
 				Domain/Entities/CharacterEntity.swift,
+				Domain/Repo/CharacterRepository.swift,
+				Domain/UseCases/FetchCharactersUseCase.swift,
 				"Extensions/Encodable+Dictionary.swift",
 				Feature/CharacterList/CharacterListProtocols.swift,
 				Feature/CharacterList/CharactersViewModel.swift,
