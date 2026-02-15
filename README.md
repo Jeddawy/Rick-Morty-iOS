@@ -50,69 +50,13 @@ The application follows **Clean Architecture** with **MVVM** (Model-View-ViewMod
 ### System Design
 High-level flow: the View talks only to the ViewModel; the ViewModel talks only to Use Cases; Use Cases use Repositories; Repositories use Services and map DTOs to Entities.
 
-```mermaid
-classDiagram
-    direction LR
+<img width="1096" height="679" alt="Screenshot 2026-02-16 at 12 59 36 AM" src="https://github.com/user-attachments/assets/166831db-210d-4990-b5da-d4dfc90839c5" />
 
-    %% Styles
-    classDef presentation fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef domain fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    classDef data fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+### Demo
 
-    %% Presentation Layer
-    subgraph Presentation ["Presentation Layer"]
-        direction TB
-        class CharactersView
-        class CharactersViewModel
-    end
+![Demo](https://github.com/user-attachments/assets/2e8891d4-75b7-4474-8686-06c8a1b30895)
 
-    %% Domain Layer
-    subgraph Domain ["Domain Layer"]
-        direction TB
-        class FetchCharactersUseCase {
-            <<protocol>>
-        }
-        class CharacterRepository {
-            <<protocol>>
-        }
-        class CharacterEntity
-    end
-
-    %% Data Layer
-    subgraph Data ["Data Layer"]
-        direction TB
-        class FetchCharactersUseCaseDefault
-        class CharacterRepositoryDefault
-        class CharacterServiceable {
-            <<protocol>>
-        }
-        class CharacterService
-        class APIClient {
-            <<protocol>>
-        }
-    end
-
-    %% Relationships
-    CharactersView --> CharactersViewModel : Owns
-    CharactersViewModel --> FetchCharactersUseCase : Uses
-
-    FetchCharactersUseCase <|.. FetchCharactersUseCaseDefault : Implements
-    FetchCharactersUseCaseDefault --> CharacterRepository : Uses
-    CharacterRepository <|.. CharacterRepositoryDefault : Implements
-    CharacterRepositoryDefault --> CharacterServiceable : Uses
-    CharacterRepositoryDefault ..> CharacterEntity : DTO → Entity
-    CharacterServiceable <|.. CharacterService : Implements
-    CharacterService --> APIClient : Uses
-
-    %% Apply Styles
-    class CharactersView,CharactersViewModel presentation
-    class FetchCharactersUseCase,CharacterRepository,CharacterEntity domain
-    class FetchCharactersUseCaseDefault,CharacterRepositoryDefault,CharacterServiceable,CharacterService,APIClient data
-```
-
----
-
-## 🧐 Decisions & Assumptions
+## Decisions & Assumptions
 
 ### Technical Decisions
 -   **No 3rd Party Libraries**: The app uses native frameworks (URLSession, SwiftUI, Combine) to minimize dependencies and binary size.
