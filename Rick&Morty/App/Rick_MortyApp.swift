@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct Rick_MortyApp: App {
+    private let container = DIContainer()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CharactersView(viewModel: container.makeCharactersViewModel())
         }
     }
 }
