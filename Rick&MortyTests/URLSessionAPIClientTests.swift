@@ -25,7 +25,21 @@ struct URLSessionAPIClientTests {
     
     // MockURLProtocol to intercept requests
     class MockURLProtocol: URLProtocol {
-        static var requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data))?
+        // Shared state for parallel tests
+        private static var handlers: [String: ((URLRequest) throws -> (HTTPURLResponse, Data))] = [:]
+        private static let lock = NSLock()
+        
+        static func register(path: String, handler: @escaping (URLRequest) throws -> (HTTPURLResponse, Data)) {
+            lock.lock()
+            defer { lock.unlock() }
+            handlers[path] = handler
+        }
+        
+        static func getHandler(for path: String) -> ((URLRequest) throws -> (HTTPURLResponse, Data))? {
+            lock.lock()
+            defer { lock.unlock() }
+            return handlers[path]
+        }
         
         override class func canInit(with request: URLRequest) -> Bool {
             return true
@@ -36,8 +50,9 @@ struct URLSessionAPIClientTests {
         }
         
         override func startLoading() {
-            guard let handler = MockURLProtocol.requestHandler else {
-                fatalError("Handler not set")
+            guard let url = request.url,
+                  let handler = MockURLProtocol.getHandler(for: url.path) else {
+                fatalError("Handler not set for path: \(request.url?.path ?? "unknown")")
             }
             
             do {
@@ -64,7 +79,7 @@ struct URLSessionAPIClientTests {
         let client = URLSessionAPIClient(session: session)
         
         // Define expectation
-        MockURLProtocol.requestHandler = { request in
+        MockURLProtocol.register(path: "/api/test") { request in
             guard let url = request.url,
                   let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
                 fatalError("Invalid URL")
@@ -101,7 +116,7 @@ struct URLSessionAPIClientTests {
         let session = URLSession(configuration: configuration)
         let client = URLSessionAPIClient(session: session)
         
-        MockURLProtocol.requestHandler = { request in
+        MockURLProtocol.register(path: "/api/user/123/details") { request in
             guard let url = request.url else { fatalError("Invalid URL") }
             
             #expect(url.path == "/api/user/123/details")
@@ -130,7 +145,7 @@ struct URLSessionAPIClientTests {
         let session = URLSession(configuration: configuration)
         let client = URLSessionAPIClient(session: session)
         
-        MockURLProtocol.requestHandler = { request in
+        MockURLProtocol.register(path: "/api/post") { request in
             #expect(request.value(forHTTPHeaderField: "Content-Type") == "application/json")
             
             if let body = request.httpBody,
