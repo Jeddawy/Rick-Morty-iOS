@@ -56,7 +56,7 @@ Below is the high-level system design highlighting the separation of concerns be
 ### Demo
 Below and GIF Demo for the App
 
-![Demo](https://github.com/user-attachments/assets/a3dc0a09-c4ef-489b-93c2-2553edcc2611)
+<![Demo](https://github.com/user-attachments/assets/a3dc0a09-c4ef-489b-93c2-2553edcc2611) />
 
 
 ## 🧐 Decisions & Assumptions
