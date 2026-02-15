@@ -9,12 +9,12 @@
 import Foundation
 
 struct RickAndMortyResponse<T: Decodable>: Decodable {
-    let info: Info
-    let results: T
-    
+    let info: Info?
+    let results: T?
+
     struct Info: Decodable {
-        let count: Int
-        let pages: Int
+        let count: Int?
+        let pages: Int?
         let next: String?
         let prev: String?
     }
