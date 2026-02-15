@@ -78,7 +78,7 @@ private extension CharactersViewModel {
             }
             
             self.hasNextPage = hasNext
-            self.currentPage += 1
+            self.currentPage = page
 
             self.stateConfiguration = .loaded(self.currentCharacters)
             
