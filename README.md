@@ -50,9 +50,13 @@ The application follows a **Clean Architecture** pattern using **MVVM** (Model-V
 ### System Design
 Below is the high-level system design highlighting the separation of concerns between Presentation, Domain, and Data layers.
 
+<img width="1503" height="1020" alt="Diagram" src="https://github.com/user-attachments/assets/c3d988a1-ed0b-4063-bc3c-c438b19015a7" />
 
 
----
+### Demo
+Below and GIF Demo for the App
+![Demo](https://github.com/user-attachments/assets/a3dc0a09-c4ef-489b-93c2-2553edcc2611)
+
 
 ## 🧐 Decisions & Assumptions
 
