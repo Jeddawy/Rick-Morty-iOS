@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CharacterResponse: Decodable {
+struct CharacterResponse: Codable {
     let id: Int
     let name: String
     let status: String
@@ -16,7 +16,7 @@ struct CharacterResponse: Decodable {
     let image: String
     let location: LocationResponse
     
-    struct LocationResponse: Decodable {
+    struct LocationResponse: Codable {
         let name: String
         let url: String
     }

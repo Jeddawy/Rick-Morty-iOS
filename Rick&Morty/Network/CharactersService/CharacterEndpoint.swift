@@ -45,8 +45,6 @@ enum CharacterEndpoint: APIEndpoint {
         switch self {
         case .characters(let params):
             return params
-        default:
-            return nil
         }
     }
 }
