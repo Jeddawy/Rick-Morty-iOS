@@ -15,16 +15,20 @@ final class DIContainer {
     
     // MARK: - Repositories
     private let characterRepository: CharacterRepository
-    
+
+    // MARK: - Use Cases
+    private let fetchCharactersUseCase: FetchCharactersUseCase
+
     init() {
         self.apiClient = URLSessionAPIClient()
         self.characterService = CharacterService(client: apiClient)
         self.characterRepository = CharacterRepositoryDefault(service: characterService)
+        self.fetchCharactersUseCase = FetchCharactersUseCaseDefault(repository: characterRepository)
     }
-    
+
     // MARK: - Factories
-    
+
     func makeCharactersViewModel() -> CharactersViewModel {
-        return CharactersViewModel(repository: characterRepository)
+        return CharactersViewModel(fetchCharactersUseCase: fetchCharactersUseCase)
     }
 }
